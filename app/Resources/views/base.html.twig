@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        {% block meta %}{% endblock meta %}
+        <title>{% block title %}{% endblock %}</title>
+
+        <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+        {% block stylesheets %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+            <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    </head>
+    <body {% block body_attr %}{% endblock body_attr %}>
+        <header>
+        </header>
+        <style type="text/css">
+            ul {
+                padding: 0;
+            }
+            li {
+                list-style-type: none;
+            }
+            .btn-primary {
+                background: #aaa;
+                border-color: #999;
+            }
+            .btn-primary:hover {
+                background: #999;
+                border-color: #888;
+            }
+            .scenario {
+                background: #eee;
+                padding: 50px;
+                margin-top: 20px;
+                border-radius: 20px;
+            }
+            .steps {
+                background: #ddd;
+                padding: 20px;
+            }
+            .step {
+                padding: 10px;
+            }
+            .step .form-group {
+                margin-bottom: 0;
+            }
+            .array-key-item.form-control {
+                width: 100px;
+                display: inline;
+            }
+            .array-header-item {
+                font-weight: bold;
+            }
+            #feature_name {
+                height: 50px;
+                line-height: 50px;
+                font-size: 30px;
+                margin-top: 50px;
+            }
+            .table-header {
+                border: 2px solid #aaa;
+                margin-top: 20px;
+            }
+            .table-body {
+                border: 1px solid #aaa;
+            }
+        </style>
+        {% block pre_body %}{% endblock pre_body %}
+        <div class="container">
+            {% block body %}{% endblock %}
+        </div>
+        {% block post_body %}{% endblock post_body %}
+        <script src="{{ asset('js/vendor/jquery-1.11.3.min.js') }}"></script>
+        <script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

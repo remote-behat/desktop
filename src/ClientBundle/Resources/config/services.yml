@@ -1,0 +1,10 @@
+services:
+    client.parser.feature:
+        class: ClientBundle\Parser\FeatureParser
+
+    client.form.step_parameter:
+        class: ClientBundle\Form\Type\StepParameterType
+        arguments:
+            - "@logger"
+        tags:
+            - { name: form.type }

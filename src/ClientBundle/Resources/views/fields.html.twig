@@ -1,0 +1,24 @@
+{% extends 'bootstrap_3_layout.html.twig' %}
+
+{% block custom_collection_widget %}
+    {% set class = form.vars.attr.class is defined ? form.vars.attr.class : '' %}
+    <div class="collection {{ class }}" data-prototype="{{ form_row(prototype)|escape }}">
+        {% for item in form %}
+            {{ form_row(item) }}
+        {% endfor %}
+        <a href="#" class="collection-add btn btn-primary">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            {{ form.vars.add_label }}
+        </a>
+    </div>
+{% endblock custom_collection_widget %}
+
+{% block array_key_row %}
+    {% set class = form.vars.attr.class is defined ? form.vars.attr.class : '' %}
+    {{ form_widget(form, {attr: {class: class ~ ' array-key-item'}}) }}
+{% endblock array_key_row %}
+
+{% block feature_widget %}
+    {{ form_widget(form.name) }}
+    {{ form_row(form.scenarios, {attr: {class: 'collection'}}) }}
+{% endblock feature_widget %}
