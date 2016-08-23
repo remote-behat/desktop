@@ -1,0 +1,18 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <h1>List of projects</h1>
+
+    {% for project in projects %}
+        <div class="well">
+            <a href="{{ path('client_feature_list', {'projectSlug': project.slug}) }}">
+                {{ project.name }}
+            </a>
+            -
+            <a href="{{ path('client_project_edit', {'projectSlug': project.slug}) }}">
+                Edit
+            </a>
+        </div>
+    {% endfor %}
+    <a href="{{ path('client_project_create') }}" class="btn btn-success">Create new project</a>
+{% endblock body %}

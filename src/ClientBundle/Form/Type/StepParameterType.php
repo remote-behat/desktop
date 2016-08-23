@@ -63,9 +63,11 @@ class StepParameterType extends AbstractType
                         ],
                         'label' => false,
                         'attr' => [
-                            'class' => 'table-header'
+                            'class' => 'table-header',
+                            'data-prototype-name' => 'tableHeaderName'
                         ],
-                        'add_label' => 'Add column'
+                        'add_label' => 'Add column',
+                        'prototype_name' => 'tableHeaderName'
                     ]);
                     $form->add('values', CustomCollectionType::class, [
                         'entry_type' => CustomCollectionType::class,
@@ -76,12 +78,18 @@ class StepParameterType extends AbstractType
                             ],
                             'label' => false,
                             'attr' => [
-                                'class' => 'table-body'
+                                'class' => 'table-body',
+                                'data-prototype-name' => 'tableCellName'
                             ],
-                            'add_label' => 'Add column'
+                            'add_label' => 'Add column',
+                            'prototype_name' => 'tableCellName'
                         ],
                         'label' => false,
-                        'add_label' => 'Add new line'
+                        'add_label' => 'Add new line',
+                        'prototype_name' => 'tableLineName',
+                        'attr' => [
+                            'data-prototype-name' => 'tableLineName'
+                        ]
                     ]);
                     if ($form->has('content')) {
                         $form->remove('content');

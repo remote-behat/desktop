@@ -2,10 +2,6 @@
 
 {% form_theme form 'ClientBundle::fields.html.twig' %}
 
-{% block body %}
-    {{ form(form) }}
-{% endblock body %}
-
 {% block javascripts %}
     <script type="text/javascript">
         $(document).ready(function() {
@@ -13,7 +9,8 @@
                 e.preventDefault();
                 var list = $(this).parent();
                 var newWidget = list.attr('data-prototype');
-                newWidget = newWidget.replace(/__name__/g, list.children().length);
+                var re = new RegExp(list.data('prototype-name'), 'g');
+                newWidget = newWidget.replace(re, list.children().length);
                 $(newWidget).insertBefore($(this));
             });
             $(document).on('change', '.parameter-type', function() {

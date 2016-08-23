@@ -126,24 +126,29 @@ class FeatureParser
      */
     private function createStep($line, $type)
     {
+        $this->step = new Step();
+
         switch ($type) {
             case self::TYPE_STEP_GIVEN:
                 $delimiter = 6;
+                $this->step->setType(Step::TYPE_GIVEN);
                 break;
             case self::TYPE_STEP_WHEN:
                 $delimiter = 5;
+                $this->step->setType(Step::TYPE_WHEN);
                 break;
             case self::TYPE_STEP_AND:
                 $delimiter = 4;
+                $this->step->setType(Step::TYPE_AND);
                 break;
             case self::TYPE_STEP_THEN:
                 $delimiter = 5;
+                $this->step->setType(Step::TYPE_THEN);
                 break;
             default:
                 $delimiter = 0;
         }
 
-        $this->step = new Step();
         $this->scenario->addStep($this->step);
         $this->step->setContent(substr($line, $delimiter));
     }
@@ -157,7 +162,7 @@ class FeatureParser
         $this->index++;
 
         while (trim($this->contents[$this->index]) !== '"""') {
-            $line .= trim($this->contents[$this->index]) . "\n";
+            $line .= substr(trim($this->contents[$this->index], "\t\n\r\0\x0B"), 4) . "\n";
             $this->index++;
         }
 

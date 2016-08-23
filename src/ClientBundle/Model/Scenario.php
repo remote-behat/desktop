@@ -27,6 +27,11 @@ class Scenario
      */
     private $steps;
 
+    public function __construct()
+    {
+        $this->steps = [];
+    }
+
     /**
      * @return int
      */

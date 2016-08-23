@@ -31,10 +31,12 @@ class ScenarioType extends AbstractType
             ->add('steps', CustomCollectionType::class, [
                 'entry_type' => StepType::class,
                 'attr' => [
-                    'class' => 'steps'
+                    'class' => 'steps',
+                    'data-prototype-name' => 'stepName'
                 ],
                 'add_label' => 'Add step',
-                'label' => false
+                'label' => false,
+                'prototype_name' => 'stepName',
             ])
         ;
     }

@@ -8,6 +8,9 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: fr
+    client.features_dir: "%kernel.root_dir%/../features"
+    client.deploy_dir: "%kernel.root_dir%/../deploy"
+    client.behat_exe: "%kernel.root_dir%/../vendor/behat/behat/bin/behat"
 
 framework:
     #esi:             ~

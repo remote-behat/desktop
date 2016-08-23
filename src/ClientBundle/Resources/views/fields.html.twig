@@ -2,7 +2,8 @@
 
 {% block custom_collection_widget %}
     {% set class = form.vars.attr.class is defined ? form.vars.attr.class : '' %}
-    <div class="collection {{ class }}" data-prototype="{{ form_row(prototype)|escape }}">
+    {% set prototypeName = form.vars.attr['data-prototype-name'] is defined ? form.vars.attr['data-prototype-name'] : '' %}
+    <div class="collection {{ class }}" data-prototype="{{ form_row(prototype)|escape }}" data-prototype-name="{{ prototypeName }}">
         {% for item in form %}
             {{ form_row(item) }}
         {% endfor %}

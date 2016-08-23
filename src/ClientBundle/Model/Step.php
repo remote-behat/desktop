@@ -4,6 +4,11 @@ namespace ClientBundle\Model;
 
 class Step
 {
+    const TYPE_GIVEN = 0;
+    const TYPE_WHEN = 1;
+    const TYPE_THEN = 2;
+    const TYPE_AND = 3;
+
     /**
      * @var Scenario
      */
@@ -18,6 +23,11 @@ class Step
      * @var StepParameter[]
      */
     private $parameters;
+
+    /**
+     * @var int
+     */
+    private $type;
 
     public function __construct()
     {
@@ -74,6 +84,22 @@ class Step
         foreach ($parameters as $parameter) {
             $parameter->setStep($this);
         }
+    }
+
+    /**
+     * @return int
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param int $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
     }
 
     /**

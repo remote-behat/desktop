@@ -1,0 +1,22 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('client_project_list') }}">Projects</a></li>
+        <li class="active">{{ project.name }}</li>
+    </ol>
+
+    <h1>List of features for project {{ project.name }}</h1>
+
+    {% for feature in features %}
+        <div class="well">
+            <a href="{{ path('client_feature_display', {'projectSlug': project.slug, 'feature': feature}) }}">
+                {{ feature }}
+            </a>
+        </div>
+    {% endfor %}
+
+    <a href="{{ path('client_feature_create', {projectSlug: project.slug}) }}" class="btn btn-success">
+        Create new feature
+    </a>
+{% endblock body %}

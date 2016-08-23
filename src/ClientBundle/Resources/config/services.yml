@@ -1,6 +1,22 @@
 services:
+    client.checker.feature_exists_in_project:
+        class: ClientBundle\Checker\FeatureExistsInProjectChecker
+        arguments:
+            - "%client.deploy_dir%"
+
+    client.checker.features_are_synchronized:
+        class: ClientBundle\Checker\FeaturesAreSynchronizedChecker
+        arguments:
+            - "%client.deploy_dir%"
+            - "%client.features_dir%"
+
+    client.parser.behat_result:
+        class: ClientBundle\Parser\BehatResultParser
     client.parser.feature:
         class: ClientBundle\Parser\FeatureParser
+
+    client.transformer.feature_to_string:
+        class: ClientBundle\Transformer\FeatureToStringTransformer
 
     client.form.step_parameter:
         class: ClientBundle\Form\Type\StepParameterType
@@ -8,3 +24,11 @@ services:
             - "@logger"
         tags:
             - { name: form.type }
+
+    client.executer.command:
+        class: ClientBundle\Executer\CommandExecuter
+
+    client.writer.feature:
+        class: ClientBundle\Writer\FeatureWriter
+        arguments:
+            - "@client.transformer.feature_to_string"

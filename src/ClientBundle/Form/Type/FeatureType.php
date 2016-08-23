@@ -23,7 +23,11 @@ class FeatureType extends AbstractType
             ->add('scenarios', CustomCollectionType::class, [
                 'entry_type' => ScenarioType::class,
                 'label' => false,
-                'add_label' => 'Add scenario'
+                'add_label' => 'Add scenario',
+                'prototype_name' => 'scenarioName',
+                'attr' => [
+                    'data-prototype-name' => 'scenarioName'
+                ]
             ])
             ->add('submit', SubmitType::class)
         ;

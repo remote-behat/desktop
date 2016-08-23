@@ -1,0 +1,115 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('client_project_list') }}">Projects</a></li>
+        <li><a href="{{ path('client_feature_list', {projectSlug: project.slug}) }}">{{ project.name }}</a></li>
+        <li class="active">{{ feature.name }}</li>
+    </ol>
+
+    <h1>{{ feature.name }}</h1>
+
+    <a href="{{ path('client_feature_install', {projectSlug: project.slug}) }}" class="ajax-action btn btn-primary">Install</a>
+    {% if exists and sync %}
+        <a href="{{ path('client_feature_test', {projectSlug: project.slug, feature: featureFile}) }}" class="ajax-action action-test btn btn-success">Test</a>
+    {% endif %}
+
+    {% if not exists %}
+        <div class="bg-warning notification">
+            The feature doesn't exist in the currently installed project. Please wait for the developers to integrate it.
+        </div>
+    {% elseif not sync %}
+        <div class="bg-warning notification">
+            The feature exists in the currently installed project, but is not synchronized with the last changes.
+            Please wait for the developers to integrate them.
+        </div>
+    {% endif %}
+
+    {% for scenario in feature.scenarios %}
+        <div class="well well-lg display-scenario display-scenario-{{ scenario.type == 1 ? 'background' : 'scenario' }}">
+            <h2>{{ scenario.name }}</h2>
+            {% for step in scenario.steps %}
+                <div class="well display-step">
+                    <span class="display-step-type">
+                        {% if step.type == constant('ClientBundle\\Model\\Step::TYPE_GIVEN') %}
+                            Given
+                        {% elseif step.type == constant('ClientBundle\\Model\\Step::TYPE_WHEN') %}
+                            When
+                        {% elseif step.type == constant('ClientBundle\\Model\\Step::TYPE_THEN') %}
+                            Then
+                        {% else %}
+                            And
+                        {% endif %}
+                    </span>
+                    {{ step.content }}
+                    {% for parameter in step.parameters %}
+                        {% if parameter.type == constant('ClientBundle\\Model\\StepParameter::TYPE_MULTILINE') %}
+                            <div class="well display-step-parameter">
+                                {{ parameter.content|replace({' ': '&nbsp;'})|raw|nl2br }}
+                            </div>
+                        {% elseif parameter.type == constant('ClientBundle\\Model\\StepParameter::TYPE_TABLE') %}
+                            <div class="well display-step-parameter">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            {% for key in parameter.keys %}
+                                                <th>{{ key }}</th>
+                                            {% endfor %}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for valueLine in parameter.values %}
+                                            <tr>
+                                                {% for value in valueLine %}
+                                                    <td>{{ value }}</td>
+                                                {% endfor %}
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+{% endblock body %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.ajax-action').click(function(e) {
+                e.preventDefault();
+                var $that = $(this);
+                $.get($(this).attr('href'), function(data) {
+                    if ($that.hasClass('action-test')) {
+                        console.log(data);
+                        var id = 0;
+                        $('.display-scenario-background').each(function(idBackground, background) {
+                            $(background).find('.display-step').each(function(idStep, step) {
+                                if (data.backgrounds[id].code === 'success') {
+                                    $(step).addClass('bg-success');
+                                } else {
+                                    $(step).addClass('bg-danger');
+                                }
+                                id++;
+                            });
+                        });
+                        id = 0;
+                        $('.display-scenario-scenario').each(function(idScenario, scenario) {
+                            $(scenario).find('.display-step').each(function(idStep, step) {
+                                if (data.scenarios[id].code === 'success') {
+                                    $(step).addClass('bg-success');
+                                } else {
+                                    $(step).addClass('bg-danger');
+                                }
+                                id++;
+                            });
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock javascripts %}

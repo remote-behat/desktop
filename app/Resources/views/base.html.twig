@@ -19,6 +19,13 @@
     </head>
     <body {% block body_attr %}{% endblock body_attr %}>
         <header>
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">Remote Behat</a>
+                    </div>
+                </div>
+            </nav>
         </header>
         <style type="text/css">
             ul {
@@ -70,6 +77,49 @@
             }
             .table-body {
                 border: 1px solid #aaa;
+            }
+
+            .display-scenario.display-scenario-background {
+                background: #777;
+                color: #eee;
+            }
+            .display-scenario.display-scenario-background .well {
+                background: #666;
+            }
+            .display-step-type,
+            .display-scenario.display-scenario-background .well.bg-success .display-step-type
+            {
+                color: #800;
+                font-weight: bold;
+            }
+            .display-scenario.display-scenario-background .well .display-step-type {
+                color: #CC0;
+            }
+            .display-scenario.display-scenario-background .display-step-parameter {
+                background: #555;
+            }
+            .display-step-parameter {
+                background: #eee;
+                margin-top: 20px;
+            }
+            .ajax-action {
+                margin-bottom: 20px;
+            }
+            .well.bg-success,
+            .display-scenario.display-scenario-background .well.bg-success,
+            .display-scenario.display-scenario-background .well.bg-success .display-step-parameter {
+                background-color: #dff0d8;
+                color: #333;
+            }
+            .well.bg-danger,
+            .display-scenario.display-scenario-background .well.bg-danger,
+            .display-scenario.display-scenario-background .well.bg-danger .display-step-parameter {
+                background-color: #C00;
+                color: #eee;
+            }
+            .notification {
+                margin: 0 0 20px 0;
+                padding: 20px;
             }
         </style>
         {% block pre_body %}{% endblock pre_body %}
