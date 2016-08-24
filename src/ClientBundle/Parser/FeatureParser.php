@@ -186,7 +186,7 @@ class FeatureParser
         do {
             $values[] = $this->tableStringToArray($this->contents[$this->index]);
             $this->index++;
-        } while (substr(trim($this->contents[$this->index]), 0, 1) === '|');
+        } while ($this->index < count($this->contents) && substr(trim($this->contents[$this->index]), 0, 1) === '|');
 
         $this->index--;
         $parameter->setValues($values);

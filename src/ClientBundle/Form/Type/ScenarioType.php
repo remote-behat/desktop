@@ -35,6 +35,7 @@ class ScenarioType extends AbstractType
                     'data-prototype-name' => 'stepName'
                 ],
                 'add_label' => 'Add step',
+                'remove_label' => 'Remove step',
                 'label' => false,
                 'prototype_name' => 'stepName',
             ])

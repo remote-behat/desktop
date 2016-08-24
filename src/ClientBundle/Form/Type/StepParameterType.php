@@ -86,9 +86,11 @@ class StepParameterType extends AbstractType
                         ],
                         'label' => false,
                         'add_label' => 'Add new line',
+                        'remove_label' => 'Remove line',
                         'prototype_name' => 'tableLineName',
                         'attr' => [
-                            'data-prototype-name' => 'tableLineName'
+                            'data-prototype-name' => 'tableLineName',
+                            'class' => 'table-row'
                         ]
                     ]);
                     if ($form->has('content')) {

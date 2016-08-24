@@ -62,6 +62,57 @@ class FeatureController extends Controller
     }
 
     /**
+     * @param string $projectSlug
+     * @param string $feature
+     * @param Request $request
+     *
+     * @return Response
+     *
+     * @Route("/edit/{projectSlug}/{feature}")
+     */
+    public function editAction($projectSlug, $feature, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $project = $em->getRepository('ClientBundle:Project')->findOneBy([
+            'slug' => $projectSlug
+        ]);
+
+        $finder = new Finder();
+        $finder->files()->name($feature)->in($this->getParameter('client.features_dir') . '/' . $projectSlug);
+
+        if (!$finder->count() || !$project) {
+            throw new NotFoundHttpException();
+        }
+
+        foreach ($finder as $file) {
+            break;
+        }
+
+        $feature = $this->get('client.parser.feature')->parse($file);
+        $form = $this->createForm(FeatureType::class, $feature);
+        $form->handleRequest($request);
+
+        if ($form->isValid() && !$request->isXmlHttpRequest()) {
+            $dir = sprintf(
+                '%s/%s',
+                $this->getParameter('client.features_dir'),
+                $projectSlug
+            );
+
+            $this->get('client.writer.feature')->write($feature, $dir . '/' . $file->getRelativePathName());
+
+            return $this->redirect($this->generateUrl('client_feature_list', [
+                'projectSlug' => $projectSlug
+            ]));
+        }
+
+        return $this->render('ClientBundle:feature:create.html.twig', [
+            'project' => $project,
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
      * @Route("/form")
      */
     public function formAction(Request $request)

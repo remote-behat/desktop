@@ -24,6 +24,7 @@ class FeatureType extends AbstractType
                 'entry_type' => ScenarioType::class,
                 'label' => false,
                 'add_label' => 'Add scenario',
+                'remove_label' => 'Remove scenario',
                 'prototype_name' => 'scenarioName',
                 'attr' => [
                     'data-prototype-name' => 'scenarioName'

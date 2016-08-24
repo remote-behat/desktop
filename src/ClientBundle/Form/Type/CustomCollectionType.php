@@ -20,6 +20,7 @@ class CustomCollectionType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['add_label'] = $options['add_label'];
+        $view->vars['remove_label'] = $options['remove_label'];
     }
 
     /**
@@ -44,7 +45,9 @@ class CustomCollectionType extends AbstractType
             'attr' => [
                 'class' => 'collection'
             ],
-            'add_label' => ''
+            'add_label' => '',
+            'remove_label' => '',
+            'by_reference' => false
         ]);
     }
 }

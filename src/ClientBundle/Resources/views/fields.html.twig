@@ -1,11 +1,24 @@
 {% extends 'bootstrap_3_layout.html.twig' %}
 
+{% block step_widget %}
+    <div class="row step-type-and-content">
+        <div class="col-md-2">
+            {{ form_row(form.type) }}
+        </div>
+        <div class="col-md-10">
+            {{ form_row(form.content) }}
+        </div>
+    </div>
+    {{ form_row(form.parameters) }}
+{% endblock step_widget %}
+
 {% block custom_collection_widget %}
     {% set class = form.vars.attr.class is defined ? form.vars.attr.class : '' %}
     {% set prototypeName = form.vars.attr['data-prototype-name'] is defined ? form.vars.attr['data-prototype-name'] : '' %}
-    <div class="collection {{ class }}" data-prototype="{{ form_row(prototype)|escape }}" data-prototype-name="{{ prototypeName }}">
+    <div class="collection {{ class }}" data-prototype="{{ form_row(prototype)|escape }}" data-prototype-name="{{ prototypeName }}" data-remove-label="{{ form.vars.remove_label }}">
         {% for item in form %}
             {{ form_row(item) }}
+
         {% endfor %}
         <a href="#" class="collection-add btn btn-primary">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>

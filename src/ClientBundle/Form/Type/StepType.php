@@ -34,9 +34,11 @@ class StepType extends AbstractType
                 'entry_type' => StepParameterType::class,
                 'label' => false,
                 'add_label' => 'Add parameter',
+                'remove_label' => 'Remove parameter',
                 'prototype_name' => 'parameterName',
                 'attr' => [
-                    'data-prototype-name' => 'parameterName'
+                    'data-prototype-name' => 'parameterName',
+                    'class' => 'step-parameters'
                 ]
             ])
         ;

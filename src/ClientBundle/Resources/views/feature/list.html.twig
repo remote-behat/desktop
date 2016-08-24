@@ -13,6 +13,10 @@
             <a href="{{ path('client_feature_display', {'projectSlug': project.slug, 'feature': feature}) }}">
                 {{ feature }}
             </a>
+            -
+            <a href="{{ path('client_feature_edit', {'projectSlug': project.slug, 'feature': feature}) }}">
+                Edit
+            </a>
         </div>
     {% endfor %}
 

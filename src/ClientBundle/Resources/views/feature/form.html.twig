@@ -11,7 +11,9 @@
                 var newWidget = list.attr('data-prototype');
                 var re = new RegExp(list.data('prototype-name'), 'g');
                 newWidget = newWidget.replace(re, list.children().length);
-                $(newWidget).insertBefore($(this));
+                var $newWidget = $(newWidget)/*.first()*/;
+                $newWidget.insertBefore($(this));
+                addFormDeleteLink($newWidget, list.data('remove-label'));
             });
             $(document).on('change', '.parameter-type', function() {
                 var $form = $(this).closest('form');
@@ -30,6 +32,24 @@
                     }
                 });
             });
-        })
+            $('.collection').children().each(function(id, element, label) {
+                if (!$(element).hasClass('collection-add')) {
+                    addFormDeleteLink($(element), $(this).parent().data('remove-label'));
+                }
+            });
+        });
+        function addFormDeleteLink($element, label) {
+            var $removeFormA = $('<a href="#" class="btn btn-danger"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span> ' + label + '</a>');
+            if ($element.html()) {
+                $element.append($removeFormA);
+            } else {
+                $removeFormA.insertAfter($element);
+            }
+            $removeFormA.on('click', function (e) {
+                e.preventDefault();
+                $element.remove();
+                $(this).remove();
+            });
+        }
     </script>
 {% endblock %}

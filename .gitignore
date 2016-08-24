@@ -13,3 +13,5 @@
 /.idea
 /web/uploads/
 /web/media/
+/deploy/
+/features/
