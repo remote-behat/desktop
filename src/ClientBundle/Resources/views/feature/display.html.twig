@@ -9,9 +9,15 @@
 
     <h1>{{ feature.name }}</h1>
 
-    <a href="{{ path('client_feature_install', {projectSlug: project.slug}) }}" class="ajax-action btn btn-primary">Install</a>
+    <a href="{{ path('client_feature_install', {projectSlug: project.slug}) }}" class="ajax-action btn btn-primary">
+        <span class="not-preloading">Install</span>
+        <span class="preloading"><img src="{{ asset('img/pacman.gif') }}" /> </span>
+    </a>
     {% if exists and sync %}
-        <a href="{{ path('client_feature_test', {projectSlug: project.slug, feature: featureFile}) }}" class="ajax-action action-test btn btn-success">Test</a>
+        <a href="{{ path('client_feature_test', {projectSlug: project.slug, feature: featureFile}) }}" class="ajax-action action-test btn btn-success">
+            <span class="not-preloading">Test</span>
+            <span class="preloading"><img src="{{ asset('img/pacman.gif') }}" /> </span>
+        </a>
     {% endif %}
 
     {% if not exists %}
@@ -82,9 +88,10 @@
             $('.ajax-action').click(function(e) {
                 e.preventDefault();
                 var $that = $(this);
+                $that.find('.preloading').show();
+                $that.find('.not-preloading').hide();
                 $.get($(this).attr('href'), function(data) {
                     if ($that.hasClass('action-test')) {
-                        console.log(data);
                         var id = 0;
                         $('.display-scenario-background').each(function(idBackground, background) {
                             $(background).find('.display-step').each(function(idStep, step) {
@@ -108,6 +115,8 @@
                             });
                         });
                     }
+                    $that.find('.preloading').hide();
+                    $that.find('.not-preloading').show();
                 });
             });
         });

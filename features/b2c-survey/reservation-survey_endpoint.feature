@@ -290,7 +290,7 @@ Feature: Having a working reservation-surveys endpoint
         "booking_done": true
     }
     """
-    Then I should get 403 response
+    Then I should get 402 response
 
   Scenario: Failing to update a non-existing survey
     When I send a PUT request to "/api/reservation-surveys/42" with JSON body:
