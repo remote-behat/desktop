@@ -10,12 +10,12 @@ class BehatResultParser
     /**
      * @var Scenario[]
      */
-    private $backgrounds;
+    private $backgrounds = [];
 
     /**
      * @var Scenario[]
      */
-    private $scenarios;
+    private $scenarios = [];
 
     /**
      * @param Feature $feature
