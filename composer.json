@@ -1,5 +1,5 @@
 {
-    "name": "pierre/socialroom",
+    "name": "remote-behat/desktop",
     "license": "proprietary",
     "type": "project",
     "autoload": {
