@@ -1,5 +1,5 @@
-remote-behat
-============
+remote-behat desktop
+====================
 
 Remotely manage your project and features, and test them online.
 
