@@ -210,10 +210,6 @@ class FeatureController extends Controller
      */
     public function installAction($projectSlug, Request $request)
     {
-        if (!$request->isXmlHttpRequest()) {
-            throw new NotFoundHttpException();
-        }
-
         $em = $this->getDoctrine()->getManager();
         $project = $em->getRepository('ClientBundle:Project')->findOneBy([
             'slug' => $projectSlug
@@ -230,7 +226,7 @@ class FeatureController extends Controller
             $project->getInstallationRequirements()
         );
 
-        return new JsonResponse($this->get('client.executer.command')->execute($cmd));
+        return $this->get('client.executer.command')->executeAndStreamResponse($cmd);
     }
 
     /**

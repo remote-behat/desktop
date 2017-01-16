@@ -4,6 +4,7 @@ namespace ClientBundle\Parser;
 
 use ClientBundle\Model\Feature;
 use ClientBundle\Model\Scenario;
+use Symfony\Component\Process\Process;
 
 class BehatResultParser
 {
@@ -25,11 +26,11 @@ class BehatResultParser
      */
     public function parse(Feature $feature, array $pipes)
     {
-        if (!empty($pipes[1])) {
+        if (!empty($pipes[Process::ERR])) {
             echo 'oh no !';die;
         }
 
-        $testResult = substr($pipes[0], 0, strpos($pipes[0], "\n"));
+        $testResult = substr($pipes[Process::OUT], 0, strpos($pipes[Process::OUT], "\n"));
         $this->explodeScenarios($feature);
 
         $return = [

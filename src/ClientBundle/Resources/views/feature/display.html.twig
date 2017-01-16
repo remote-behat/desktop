@@ -9,7 +9,7 @@
 
     <h1>{{ feature.name }}</h1>
 
-    <a href="{{ path('client_feature_install', {projectSlug: project.slug}) }}" class="ajax-action btn btn-primary">
+    <a href="{{ path('client_feature_install', {projectSlug: project.slug}) }}" class="ajax-action ajax-stream btn btn-primary" data-log-container="#install-log">
         <span class="not-preloading">Install</span>
         <span class="preloading"><img src="{{ asset('img/pacman.gif') }}" /> </span>
     </a>
@@ -19,6 +19,9 @@
             <span class="preloading"><img src="{{ asset('img/pacman.gif') }}" /> </span>
         </a>
     {% endif %}
+
+    <div class="install-log" id="install-log">
+    </div>
 
     {% if not exists %}
         <div class="bg-warning notification">
@@ -90,34 +93,54 @@
                 var $that = $(this);
                 $that.find('.preloading').show();
                 $that.find('.not-preloading').hide();
-                $.get($(this).attr('href'), function(data) {
-                    if ($that.hasClass('action-test')) {
-                        var id = 0;
-                        $('.display-scenario-background').each(function(idBackground, background) {
-                            $(background).find('.display-step').each(function(idStep, step) {
-                                if (data.backgrounds[id].code === 'success') {
-                                    $(step).addClass('bg-success');
-                                } else {
-                                    $(step).addClass('bg-danger');
-                                }
-                                id++;
+
+                if ($that.hasClass('ajax-stream')) {
+                    var xhr = new XMLHttpRequest();
+                    var $logContainer = $($that.data('log-container'));
+                    $logContainer.show();
+                    xhr.onload = function() {
+                        $that.find('.preloading').hide();
+                        $that.find('.not-preloading').show();
+                    };
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState > 2) {
+                            $logContainer.html(xhr.responseText);
+                            $logContainer.scrollTop($logContainer.prop('scrollHeight'));
+                        }
+                    };
+
+                    xhr.open('GET', $that.attr('href'), true);
+                    xhr.send();
+                } else {
+                    $.get($(this).attr('href'), function (data) {
+                        if ($that.hasClass('action-test')) {
+                            var id = 0;
+                            $('.display-scenario-background').each(function (idBackground, background) {
+                                $(background).find('.display-step').each(function (idStep, step) {
+                                    if (data.backgrounds[id].code === 'success') {
+                                        $(step).addClass('bg-success');
+                                    } else {
+                                        $(step).addClass('bg-danger');
+                                    }
+                                    id++;
+                                });
                             });
-                        });
-                        id = 0;
-                        $('.display-scenario-scenario').each(function(idScenario, scenario) {
-                            $(scenario).find('.display-step').each(function(idStep, step) {
-                                if (data.scenarios[id].code === 'success') {
-                                    $(step).addClass('bg-success');
-                                } else {
-                                    $(step).addClass('bg-danger');
-                                }
-                                id++;
+                            id = 0;
+                            $('.display-scenario-scenario').each(function (idScenario, scenario) {
+                                $(scenario).find('.display-step').each(function (idStep, step) {
+                                    if (data.scenarios[id].code === 'success') {
+                                        $(step).addClass('bg-success');
+                                    } else {
+                                        $(step).addClass('bg-danger');
+                                    }
+                                    id++;
+                                });
                             });
-                        });
-                    }
-                    $that.find('.preloading').hide();
-                    $that.find('.not-preloading').show();
-                });
+                        }
+                        $that.find('.preloading').hide();
+                        $that.find('.not-preloading').show();
+                    });
+                }
             });
         });
     </script>
