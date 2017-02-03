@@ -92,7 +92,7 @@ class FeatureController extends Controller
         $form = $this->createForm(FeatureType::class, $feature);
         $form->handleRequest($request);
 
-        if ($form->isValid() && !$request->isXmlHttpRequest()) {
+        if (!$request->isXmlHttpRequest() && $form->isValid()) {
             $dir = sprintf(
                 '%s/%s',
                 $this->getParameter('client.features_dir'),

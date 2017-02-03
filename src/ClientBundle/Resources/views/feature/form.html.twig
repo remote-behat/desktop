@@ -5,13 +5,15 @@
 {% block javascripts %}
     <script type="text/javascript">
         $(document).ready(function() {
+            addColumnsIds();
+            addRowsIdsAndDeleteLinks();
             $(document).on('click', '.collection-add', function(e) {
                 e.preventDefault();
                 var list = $(this).parent();
                 var newWidget = list.attr('data-prototype');
                 var re = new RegExp(list.data('prototype-name'), 'g');
                 newWidget = newWidget.replace(re, list.children().length);
-                var $newWidget = $(newWidget)/*.first()*/;
+                var $newWidget = $(newWidget);
                 $newWidget.insertBefore($(this));
                 addFormDeleteLink($newWidget, list.data('remove-label'));
             });
@@ -37,9 +39,48 @@
                     addFormDeleteLink($(element), $(this).parent().data('remove-label'));
                 }
             });
+
+            $(document).on('click', '.table-row-add', function(e) {
+                e.preventDefault();
+                var $table = $(this).parent();
+                var newRow = $table.data('prototype');
+                var re = new RegExp('tableLineName', 'g');
+                var rowId = getLastRowId($(this).closest('.step-parameter')) + 1;
+                newRow = newRow.replace(re, rowId);
+                var $newRow = $(newRow);
+                var newField = $newRow.find('.table-line').data('prototype');
+                var re2 = new RegExp('__name__', 'g');
+                var columnsIds = getColumnsIdsInTable($table.closest('.step-parameter'));
+                for (var i = 0 ; i < columnsIds.length ; i++) {
+                    var newFieldHtml = newField.replace(re2, columnsIds[i]);
+                    var $newFieldItem = $(newFieldHtml);
+                    $newFieldItem.attr('data-row-id', rowId);
+                    $newFieldItem.attr('data-column-id', columnsIds[i]);
+                    $newRow.find('.table-line').append($newFieldItem);
+                }
+                $newRow.insertBefore($(this));
+                addRowDeleteLink($newRow);
+            });
+            $(document).on('click', '.table-column-add', function(e) {
+                e.preventDefault();
+                var $table = $(this).parents('.step-parameter').first();
+                $table.find('.table-line').each(function(id, tableLine) {
+                    addColumn(id, $(tableLine));
+                });
+            });
+            $(document).on('click', '.table-column-remove', function(e) {
+                e.preventDefault();
+                var columnId = $(e.target).parents('.array-key').first().data('column-id');
+                $(this).parents('.step-parameter').first().find('[data-column-id=' + columnId + ']').remove();
+            });
+            $(document).on('click', '.table-row-remove', function(e) {
+                e.preventDefault();
+                var rowId = $(e.target).parents('.array-key').first().data('row-id');
+                $(this).parents('.step-parameter').first().find('[data-row-id=' + rowId + ']').first().closest('.form-group').remove();
+                });
         });
         function addFormDeleteLink($element, label) {
-            var $removeFormA = $('<a href="#" class="btn btn-danger"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span> ' + label + '</a>');
+            var $removeFormA = $('<a href="#" class="btn-sm btn-danger"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span> ' + label + '</a>');
             if ($element.html()) {
                 $element.append($removeFormA);
             } else {
@@ -49,6 +90,61 @@
                 e.preventDefault();
                 $element.remove();
                 $(this).remove();
+            });
+        }
+        function addColumn(rowId, $tableLine) {
+            var newField = $tableLine.data('prototype');
+            var re = new RegExp('__name__', 'g');
+            var columns = $tableLine.find('.array-key');
+            var newColumnId = columns.length ? parseInt($(columns.last()).data('column-id')) + 1 : 1;
+            if (columns.length) {
+                rowId = $(columns.first()).data('row-id');
+
+            }
+            newField = newField.replace(re, newColumnId);
+            var $newField = $(newField);
+            $newField.attr('data-column-id', newColumnId);
+            $newField.attr('data-row-id', rowId);
+            if (columns.length) {
+                $newField.insertAfter($(columns.last()));
+            } else {
+                $tableLine.prepend($newField);
+            }
+        }
+        function addColumnsIds() {
+            $('.table-line').each(function(id, tableLine) {
+                $(tableLine).find('.array-key').each(function(columnId, arrayKey) {
+                    $(arrayKey).attr('data-column-id', columnId);
+                });
+            });
+        }
+        function addRowsIdsAndDeleteLinks() {
+            $('.step-parameter').each(function(paramId, parameter) {
+                $(parameter).find('.table-line').each(function(rowId, tableLine) {
+                    if (rowId) {
+                        addRowDeleteLink($(tableLine));
+                    }
+                    $(tableLine).find('.array-key').each(function(columnId, arrayKey) {
+                        $(arrayKey).attr('data-row-id', rowId);
+                    });
+                });
+            })
+        }
+        function addRowDeleteLink($row) {
+            var $children = $row.find('.array-key');
+            if ($children.length) {
+                $children
+                    .first()
+                    .append('<a href="#" class="table-row-remove btn-xs btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>')
+                ;
+            }
+        }
+        function getLastRowId($parameter) {
+            return $parameter.find('.array-key').last().data('row-id');
+        }
+        function getColumnsIdsInTable($parameter) {
+            return $parameter.find('.table-line').first().find('.array-key').map(function(id, element) {
+                return $(element).data('column-id');
             });
         }
     </script>

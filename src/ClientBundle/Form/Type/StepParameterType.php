@@ -53,46 +53,13 @@ class StepParameterType extends AbstractType
         $formModifier = function (FormInterface $form, StepParameter $parameter = null) use ($logger) {
             if ($parameter) {
                 if ($parameter->getType() === StepParameter::TYPE_TABLE) {
-                    $form->add('keys', CustomCollectionType::class, [
-                        'entry_type' => ArrayKeyType::class,
+                    $form->add('keys', TableLineType::class, [
+                        'header' => true,
                         'entry_options' => [
-                            'attr' => [
-                                'class' => 'array-header-item',
-                            ],
-                            'label' => false
-                        ],
-                        'label' => false,
-                        'attr' => [
-                            'class' => 'table-header',
-                            'data-prototype-name' => 'tableHeaderName'
-                        ],
-                        'add_label' => 'Add column',
-                        'prototype_name' => 'tableHeaderName'
-                    ]);
-                    $form->add('values', CustomCollectionType::class, [
-                        'entry_type' => CustomCollectionType::class,
-                        'entry_options' => [
-                            'entry_type' => ArrayKeyType::class,
-                            'entry_options' => [
-                                'label' => false
-                            ],
-                            'label' => false,
-                            'attr' => [
-                                'class' => 'table-body',
-                                'data-prototype-name' => 'tableCellName'
-                            ],
-                            'add_label' => 'Add column',
-                            'prototype_name' => 'tableCellName'
-                        ],
-                        'label' => false,
-                        'add_label' => 'Add new line',
-                        'remove_label' => 'Remove line',
-                        'prototype_name' => 'tableLineName',
-                        'attr' => [
-                            'data-prototype-name' => 'tableLineName',
-                            'class' => 'table-row'
+                            'to_remove_column' => true
                         ]
                     ]);
+                    $form->add('values', TableLineCollectionType::class);
                     if ($form->has('content')) {
                         $form->remove('content');
                     }
@@ -117,22 +84,22 @@ class StepParameterType extends AbstractType
             FormEvents::PRE_SET_DATA,
             function (FormEvent $event) use ($formModifier) {
                 $data = $event->getData();
-                $formModifier($event->getForm(), $data);
+                $form = $event->getForm();
+                $formModifier($form, $data);
             }
         );
 
         $builder->get('type')->addEventListener(
             FormEvents::POST_SUBMIT,
             function (FormEvent $event) use ($formModifier) {
-                $data = $event->getForm()->getData();
+                $data = $event->getData();
                 $parameter = new StepParameter();
-                if ($data === 'multiline') {
-                    $parameter->setType(StepParameter::TYPE_MULTILINE);
+                $parameter->setType($data);
+                if ($data === StepParameter::TYPE_MULTILINE) {
                     if ($event->getForm()->getParent()->has('content')) {
                         $parameter->setContent($event->getForm()->getParent()->get('content')->getData());
                     }
-                } elseif ($data === 'table') {
-                    $parameter->setType(StepParameter::TYPE_TABLE);
+                } elseif ($data === StepParameter::TYPE_TABLE) {
                     if ($event->getForm()->getParent()->has('keys')) {
                         $parameter->setKeys($event->getForm()->getParent()->get('keys')->getData());
                     }

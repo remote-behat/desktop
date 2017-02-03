@@ -3,6 +3,7 @@
 namespace ClientBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity
@@ -15,6 +16,8 @@ class Project
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Serializer\Type("integer")
      */
     private $id;
 
@@ -22,6 +25,8 @@ class Project
      * @var string
      *
      * @ORM\Column(type="string", length=255)
+     *
+     * @Serializer\Type("string")
      */
     private $name;
 
@@ -29,6 +34,8 @@ class Project
      * @var string
      *
      * @ORM\Column(type="text")
+     *
+     * @Serializer\Type("string")
      */
     private $installationRequirements;
 
@@ -36,6 +43,8 @@ class Project
      * @var string
      *
      * @ORM\Column(type="string", length=255)
+     *
+     * @Serializer\Type("string")
      */
     private $testingRootDir;
 
@@ -43,6 +52,8 @@ class Project
      * @var string
      *
      * @ORM\Column(type="string", length=255)
+     *
+     * @Serializer\Type("string")
      */
     private $featuresRelativePath;
 
@@ -50,6 +61,8 @@ class Project
      * @var string
      *
      * @ORM\Column(type="string", length=255)
+     *
+     * @Serializer\Type("string")
      */
     private $behatExe;
 
@@ -57,6 +70,8 @@ class Project
      * @var string
      *
      * @ORM\Column(type="string", length=255)
+     *
+     * @Serializer\Type("string")
      */
     private $slug;
 

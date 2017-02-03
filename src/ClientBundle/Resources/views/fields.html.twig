@@ -13,23 +13,61 @@
 {% endblock step_widget %}
 
 {% block custom_collection_widget %}
-    {% set class = form.vars.attr.class is defined ? form.vars.attr.class : '' %}
-    {% set prototypeName = form.vars.attr['data-prototype-name'] is defined ? form.vars.attr['data-prototype-name'] : '' %}
-    <div class="collection {{ class }}" data-prototype="{{ form_row(prototype)|escape }}" data-prototype-name="{{ prototypeName }}" data-remove-label="{{ form.vars.remove_label }}">
-        {% for item in form %}
-            {{ form_row(item) }}
-
-        {% endfor %}
-        <a href="#" class="collection-add btn btn-primary">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-            {{ form.vars.add_label }}
-        </a>
-    </div>
+    {% spaceless %}
+        {% set class = form.vars.attr.class is defined ? form.vars.attr.class : '' %}
+        {% set prototypeName = form.vars.attr['data-prototype-name'] is defined ? form.vars.attr['data-prototype-name'] : '' %}
+        <div class="collection {{ class }}" data-prototype="{{ form_row(prototype)|escape }}" data-prototype-name="{{ prototypeName }}" data-remove-label="{{ form.vars.remove_label }}">
+            {% for item in form %}
+                {{ form_row(item) }}
+            {% endfor %}
+            <a href="#" class="collection-add btn-sm btn-success">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                {{ form.vars.add_label }}
+            </a>
+        </div>
+    {% endspaceless %}
 {% endblock custom_collection_widget %}
+
+{% block table_line_widget %}
+    {% spaceless %}
+        {% set class = form.vars.attr.class is defined ? form.vars.attr.class : '' %}
+        <div class="table-line {{ class }}" data-prototype="{{ form_row(prototype)|escape }}">
+            {% for item in form %}
+                {{ form_row(item) }}
+            {% endfor %}
+            {% if form.vars.header %}
+                <a href="#" class="btn-xs btn-success table-column-add">
+                    <span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>
+                </a>
+            {% endif %}
+        </div>
+    {% endspaceless %}
+{% endblock table_line_widget %}
+
+{% block table_line_collection_widget %}
+    {% spaceless %}
+        {% set class = form.vars.attr.class is defined ? form.vars.attr.class : '' %}
+        <div class="{{ class }}" data-prototype="{{ form_row(prototype)|escape }}">
+            {% for item in form %}
+                {{ form_row(item) }}
+            {% endfor %}
+            <a href="#" class="btn-xs btn-success table-row-add">
+                <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+            </a>
+        </div>
+    {% endspaceless %}
+{% endblock table_line_collection_widget %}
 
 {% block array_key_row %}
     {% set class = form.vars.attr.class is defined ? form.vars.attr.class : '' %}
-    {{ form_widget(form, {attr: {class: class ~ ' array-key-item'}}) }}
+    <div class="array-key">
+        {{ form_widget(form, {attr: {class: class ~ ' array-key-item'}}) }}
+        {% if form.vars.to_remove_column %}
+            <a href="#" class="table-column-remove btn-xs btn-danger">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            </a>
+        {% endif %}
+    </div>
 {% endblock array_key_row %}
 
 {% block feature_widget %}

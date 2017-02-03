@@ -42,14 +42,17 @@
                 background: #999;
                 border-color: #888;
             }
-            .scenario {
+            .scenarios > div {
                 background: #eee;
                 padding: 50px;
                 margin-top: 20px;
-                border-radius: 20px;
             }
             .steps {
+                padding: 20px;
+            }
+            .steps > div {
                 background: #ddd;
+                margin-top: 20px;
                 padding: 20px;
             }
             .step {
@@ -66,15 +69,30 @@
             }
             .step-parameters {
                 padding: 20px;
-                border-left: 2px solid #ccc;
-                border-right: 2px solid #ccc;
-                border-bottom: 2px solid #ccc;
             }
-            .step-parameter {
+            .step-parameters > div {
                 margin-bottom: 30px;
+                background: #ccc;
+                padding: 20px;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            .array-key {
+                display: inline-block;
+                width: 150px;
+                position: relative;
+            }
+            .array-key a.table-column-remove {
+                position: absolute;
+                right: calc(50% - 12px);
+                top: -15px;
+            }
+            .array-key a.table-row-remove {
+                position: absolute;
+                top: calc(50% - 10px);
+                left: -18px;
             }
             .array-key-item.form-control {
-                width: 100px;
                 display: inline;
             }
             .array-header-item {
@@ -132,7 +150,8 @@
             }
             .well.bg-danger,
             .display-scenario.display-scenario-background .well.bg-danger,
-            .display-scenario.display-scenario-background .well.bg-danger .display-step-parameter {
+            .display-scenario.display-scenario-background .well.bg-danger .display-step-parameter,
+            .well.bg-danger .display-step-parameter {
                 background-color: #C00;
                 color: #eee;
             }

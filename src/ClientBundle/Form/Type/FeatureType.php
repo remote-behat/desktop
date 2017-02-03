@@ -27,7 +27,8 @@ class FeatureType extends AbstractType
                 'remove_label' => 'Remove scenario',
                 'prototype_name' => 'scenarioName',
                 'attr' => [
-                    'data-prototype-name' => 'scenarioName'
+                    'data-prototype-name' => 'scenarioName',
+                    'class' => 'scenarios'
                 ]
             ])
             ->add('submit', SubmitType::class)
